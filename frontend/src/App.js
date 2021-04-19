@@ -1,11 +1,14 @@
 import './App.css';
+import Sidebar from './components/Sidebar';
+import Chat from './components/Chat';
 
 function App() {
   return (
     <div className="app">
-     <h1>chatapp</h1>
-     {/* Sidebar */}
-     {/* Chat Component */}
+      <div className="app__body">
+        <Sidebar />
+        <Chat />
+      </div>
     </div>
   );
 }
