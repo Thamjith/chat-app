@@ -1,11 +1,12 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import Pusher from 'pusher';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 import cors from 'cors';
 
 import connectDB from './config/db.js'
-import messageContent from './model/messagesModel.js';
-import mongoose from 'mongoose';
+import messagecontents from './model/messagesModel.js';
+import chats from './model/chatsModel.js';
 
 dotenv.config();
 
@@ -34,7 +35,7 @@ db.once('open', () => {
     const msgCollection = db.collection("messagecontents");
     const changeStream = msgCollection.watch();
     changeStream.on("change", (change) => {
-        console.log("A change Happend : ", change)
+        console.log("A change Happend in Messages : ", change)
         if(change.operationType === 'insert'){
             const messageDetails = change.fullDocument;
             pusher.trigger('messages', 'inserted',{
@@ -49,10 +50,27 @@ db.once('open', () => {
     })
 })
 
+db.once('open', () => {
+    const msgCollection = db.collection("chats");
+    const changeStream = msgCollection.watch();
+    changeStream.on("change", (change) => {
+        console.log("A change Happend in Chat : ", change)
+        if(change.operationType === 'insert'){
+            const chatDetails = change.fullDocument;
+            pusher.trigger('chats', 'inserted',{
+                _id: chatDetails._id,
+                name: chatDetails.name
+            });
+        }else{
+            console.log('Error triggering Pusher');
+        }
+    })
+})
+
 app.get('/', (req, res)=>res.status(200).send('hello world'));
 
 app.get('/api/messages/sync', (req, res) => {
-    messageContent.find((err, data) => {
+    messagecontents.find((err, data) => {
         if(err){
             res.status(500).send(err)
         }else{
@@ -63,7 +81,28 @@ app.get('/api/messages/sync', (req, res) => {
 
 app.post('/api/messages/new', (req, res) => {
     const dbMessage = req.body
-    messageContent.create(dbMessage, (err, data) => {
+    messagecontents.create(dbMessage, (err, data) => {
+        if(err){
+            res.status(500).send(err);
+        }else{
+            res.status(201).send(data);
+        }
+    })
+})
+
+app.get('/api/chats/sync', (req, res) => {
+    chats.find((err, data) => {
+        if(err){
+            res.status(500).send(err)
+        }else{
+            res.status(200).send(data)
+        }
+    })
+})
+
+app.post('/api/chats/new', (req, res) => {
+    const dbMessage = req.body
+    chats.create(dbMessage, (err, data) => {
         if(err){
             res.status(500).send(err);
         }else{

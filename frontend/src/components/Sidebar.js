@@ -1,4 +1,4 @@
-import React from 'react'
+// import React, { useState, useEffect } from 'react'
 import "./Sidebar.css"
 import { Avatar, IconButton } from '@material-ui/core';
 
@@ -9,7 +9,8 @@ import {SearchOutlined} from '@material-ui/icons';
 
 import SidebarChat from './SidebarChat';
 
-const Sidebar = () => {
+const Sidebar = ({ chats }) => {
+
     return (
         <div className="sidebar">
             <div className="sidebar__header">
@@ -35,9 +36,15 @@ const Sidebar = () => {
             </div>
 
             <div className="sidebar__chats">
-                <SidebarChat />
-                <SidebarChat />
-                <SidebarChat />
+                <SidebarChat addNewChat />
+                {/* {console.log(chats)} */}
+                {chats.map(chat => (
+                    <SidebarChat 
+                        key={chat._id} 
+                        id={chat._id}
+                        name={chat.name}
+                    />
+                ))}
             </div>
         </div>
     )

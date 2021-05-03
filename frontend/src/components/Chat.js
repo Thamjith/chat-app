@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 import "./Chat.css";
 import axios from '../axios.js';
@@ -11,6 +12,22 @@ import MicIcon from '@material-ui/icons/Mic';
 const Chat = ({ messages }) => {
 
     const [input, setInput] = useState("");
+    const [seed, setSeed] = useState('');
+    const [chatName, setChatName] = useState('');
+    const { chatID } = useParams();
+
+    useEffect(() => {
+        if(chatID){
+            axios.get("api/chats/sync").then((response) => {
+                setChatName(response);
+                console.log("chat = ", chatName)
+            });
+        }
+    }, [])
+
+    useEffect(() => {
+        setSeed(Math.floor(Math.random() * 5000))
+    }, [])
 
     const sendMessage = async (e) => {
         e.preventDefault();
@@ -26,10 +43,10 @@ const Chat = ({ messages }) => {
     return (
         <div className="chat">
             <div className="chat__header">
-                <Avatar />
+                <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`}/>
 
                 <div className="chat__headerInfo">
-                    <h3>Room name</h3>
+                    <h3>chatName</h3>
                     <p>Last seen at ...</p>
                 </div>
 
