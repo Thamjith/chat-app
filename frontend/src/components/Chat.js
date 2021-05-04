@@ -18,16 +18,17 @@ const Chat = ({ messages }) => {
 
     useEffect(() => {
         if(chatID){
-            axios.get("api/chats/sync").then((response) => {
-                setChatName(response);
-                console.log("chat = ", chatName)
+            axios.get(`api/chats/sync/${chatID}`).then((response) => {
+                setChatName(response.data.name);
+                console.log("chat = ", response)
+                console.log("url = ", `api/chats/sync/${chatID}`)
             });
         }
-    }, [])
+    }, [chatID])
 
     useEffect(() => {
         setSeed(Math.floor(Math.random() * 5000))
-    }, [])
+    }, [chatID])
 
     const sendMessage = async (e) => {
         e.preventDefault();
@@ -46,7 +47,7 @@ const Chat = ({ messages }) => {
                 <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`}/>
 
                 <div className="chat__headerInfo">
-                    <h3>chatName</h3>
+                    <h3>{chatName}</h3>
                     <p>Last seen at ...</p>
                 </div>
 

@@ -7,8 +7,10 @@ import axios from './axios';
 
 import Sidebar from './components/Sidebar';
 import Chat from './components/Chat';
+import Login from './components/Login';
 
 function App() {
+  const [user, setUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const [chats, setChats] = useState([]);
 
@@ -46,25 +48,26 @@ function App() {
 
   }, [messages, chats])
 
-  console.log("Messages = ", messages);
-  console.log("Chats = ", chats);
-
   return (
     <div className="app">
-      <div className="app__body">
-        <Router>
-          <Sidebar chats={chats} />
-          <Switch>
-            <Route path="/chats/:chatID">
-              <Chat messages={messages} />
-            </Route>
-            <Route path="/">
-              <h1>Home Screen</h1>
-            </Route>
-          </Switch>
-        </Router>
+      {!user ? (
+        <Login />
+      ) : (
+        <div className="app__body">
+          <Router>
+            <Sidebar chats={chats} />
+            <Switch>
+              <Route path="/chats/:chatID">
+                <Chat messages={messages} />
+              </Route>
+              <Route path="/">
+                <h1>Home Screen</h1>
+              </Route>
+            </Switch>
+          </Router>
+        </div>
+        )}
       </div>
-    </div>
   );
 }
 

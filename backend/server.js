@@ -100,6 +100,16 @@ app.get('/api/chats/sync', (req, res) => {
     })
 })
 
+app.get('/api/chats/sync/:id', (req, res) => {
+    chats.findById(req.params.id, (err, data) => {
+        if(err){
+            res.status(500).send(err)
+        }else{
+            res.status(200).send(data)
+        }
+    })
+})
+
 app.post('/api/chats/new', (req, res) => {
     const dbMessage = req.body
     chats.create(dbMessage, (err, data) => {
