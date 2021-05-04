@@ -22,7 +22,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    var pusher = new Pusher('c5f9f9647b331394475d', {
+
+    var pusher = new Pusher(`${process.env.REACT_APP_PUSHER_ID}`, {
       cluster: 'ap2'
     });
 
