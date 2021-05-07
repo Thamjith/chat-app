@@ -8,9 +8,11 @@ import axios from './axios';
 import Sidebar from './components/Sidebar';
 import Chat from './components/Chat';
 import Login from './components/Login';
+import { useStateValue } from './StateProvider';
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [{ user }, dispatch] = useStateValue();
+  // const [user, setUser] = useState("thamji");
   const [messages, setMessages] = useState([]);
   const [chats, setChats] = useState([]);
 

@@ -16,6 +16,7 @@ const Chat = ({ messages }) => {
     const [chatName, setChatName] = useState('');
     const { chatID } = useParams();
 
+
     useEffect(() => {
         if(chatID){
             axios.get(`api/chats/sync/${chatID}`).then((response) => {
@@ -67,7 +68,7 @@ const Chat = ({ messages }) => {
             <div className="chat__body">
 
                 {messages.map((message) => (
-                    <p className={`chat__message ${message.received && "chat__receiver"}`}>
+                    <p key={`${message._id}`} className={`chat__message ${message.received && "chat__receiver"}`}>
                         <span className="chat__name">{message.name}</span>
                         {message.message}
                         <span className="chat__timestamp">
