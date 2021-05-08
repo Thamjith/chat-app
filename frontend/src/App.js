@@ -8,6 +8,8 @@ import axios from './axios';
 import Sidebar from './components/Sidebar';
 import Chat from './components/Chat';
 import Login from './components/Login';
+import ChatDefault from './components/ChatDefault';
+
 import { useStateValue } from './StateProvider';
 
 function App() {
@@ -63,7 +65,8 @@ function App() {
                 <Chat messages={messages} />
               </Route>
               <Route path="/">
-                <h1>Home Screen</h1>
+                {/* <h1>Home Screen</h1> */}
+                <ChatDefault />
               </Route>
             </Switch>
           </Router>
