@@ -13,8 +13,7 @@ import ChatDefault from './components/ChatDefault';
 import { useStateValue } from './StateProvider';
 
 function App() {
-  const [{ user }, dispatch] = useStateValue();
-  // const [user, setUser] = useState("thamji");
+  const [{ user, id }, dispatch] = useStateValue();
   const [messages, setMessages] = useState([]);
   const [chats, setChats] = useState([]);
 
@@ -22,10 +21,12 @@ function App() {
     axios.get("api/messages/sync").then((response) => {
       setMessages(response.data);
     });
-    axios.get("api/chats/sync").then((response) => {
+    axios.get(`api/chats/sync/${id}`).then((response) => {
+      console.log("api = ", `api/chats/sync/${id}`)
+      console.log("apiResponse = ", response)
       setChats(response.data);
     });
-  }, []);
+  }, [user]);
 
   useEffect(() => {
 

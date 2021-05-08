@@ -112,8 +112,18 @@ app.get('/api/chats/sync', (req, res) => {
     })
 })
 
+// app.get('/api/chats/sync/:id', (req, res) => {
+//     chats.findById(req.params.id, (err, data) => {
+//         if(err){
+//             res.status(500).send(err)
+//         }else{
+//             res.status(200).send(data)
+//         }
+//     })
+// })
+
 app.get('/api/chats/sync/:id', (req, res) => {
-    chats.findById(req.params.id, (err, data) => {
+    chats.find({user: req.params.id}, (err, data) => {
         if(err){
             res.status(500).send(err)
         }else{

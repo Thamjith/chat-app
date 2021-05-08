@@ -28,7 +28,8 @@ const Login = () => {
             localStorage.setItem('userInfo', JSON.stringify(response.data))
             dispatch({
                 type: actionTypes.SET_USER,
-                user: response.data.name
+                user: response.data.name,
+                id: response.data._id
             });
         });
     }
